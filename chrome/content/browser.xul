@@ -1,0 +1,15 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://firesoup/skin/skin.css" type="text/css"?>
+
+<!DOCTYPE firesoup SYSTEM "chrome://firesoup/locale/translations.dtd">
+<overlay id="fireSoup" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+		<script src="firesoup.js" />
+
+		<keyset>
+			<key id="firesoup-run-key" modifiers="accel ctrl shift" key="S" oncommand="FireSoup.open()"/>
+		</keyset>
+
+		<toolbarpalette id="BrowserToolbarPalette">
+			<toolbarbutton id="firesoup-toolbar-button" label="FireSoup" tooltiptext="&runfiresoup;" oncommand="FireSoup.open()"/>
+		</toolbarpalette>
+</overlay>

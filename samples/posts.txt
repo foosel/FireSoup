@@ -1,0 +1,37 @@
+>>> Image
+
+POST /bookmarklet/save HTTP/1.1
+Host: www.soup.io
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.0.11) Gecko/2009060309 Ubuntu/9.04 (jaunty) Firefox/3.0.11
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://www.soup.io/bookmarklet/
+Cookie: soup_session_id=adbb42f8ec1659e08004392c93b2f6c8; __qca=1248024231-14530598-65124890; __utma=149530932.2092104809.1248024235.1248024235.1248030031.2; __utmz=149530932.1248024235.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none); _csuid=49c5143b33f2602d; soup_user_id=161662--8a9006d66333804ac0445d7bad9f28d4bc0b0c4d; __qcb=1023952622; __utmb=149530932; __utmc=149530932
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 1023
+
+post[type]=image&img_9=https://addons.mozilla.org/img/amo2009/illustrations/logo-add-ons-half.png&img_6_w=200&img_0_h=75&v=5&img_7_w=200&img_8_w=200&img_0=https://addons.mozilla.org/img/amo2009/app-icons/firefox.png&img_9_w=190&img_4_h=110&img_0_w=75&img_4=https://addons.mozilla.org/en-US/firefox/images/t/18996/1204922539&img_6_h=56&img_7_h=105&img_6=https://addons.mozilla.org/en-US/firefox/images/t/18997/1204922922&s=&img_8_h=129&img_7=https://addons.mozilla.org/en-US/firefox/images/t/18998/1204922615&img_4_w=164&t=Firecookie :: Firefox Add-ons&img_9_h=181&img_8=https://addons.mozilla.org/en-US/firefox/images/t/19004/1204923534&u=https://addons.mozilla.org/de/firefox/addon/6683&post[source]=https://addons.mozilla.org/de/firefox/addon/6683&post[url]=https%3A//addons.mozilla.org/img/amo2009/app-icons/firefox.png&commit=Post image&post[blog_id]=161640
+
+>>> Quote
+
+POST /bookmarklet/save HTTP/1.1
+Host: www.soup.io
+User-Agent: Mozilla/5.0 (X11; U; Linux x86_64; en-US; rv:1.9.0.11) Gecko/2009060309 Ubuntu/9.04 (jaunty) Firefox/3.0.11
+Accept: text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8
+Accept-Language: en-us,en;q=0.5
+Accept-Encoding: gzip,deflate
+Accept-Charset: ISO-8859-1,utf-8;q=0.7,*;q=0.7
+Keep-Alive: 300
+Connection: keep-alive
+Referer: http://www.soup.io/bookmarklet/
+Cookie: soup_session_id=adbb42f8ec1659e08004392c93b2f6c8; __qca=1248024231-14530598-65124890; __utma=149530932.2092104809.1248024235.1248024235.1248030031.2; __utmz=149530932.1248024235.1.1.utmccn=(direct)|utmcsr=(direct)|utmcmd=(none); _csuid=49c5143b33f2602d; soup_user_id=161662--8a9006d66333804ac0445d7bad9f28d4bc0b0c4d; __qcb=1023952622; __utmc=149530932
+Content-Type: application/x-www-form-urlencoded
+Content-Length: 888
+
+post[type]=quote&post[source]=http://support.mozilla.com/en-US/kb/Firefox+Help?style_mode=inproduct&img_0_h=56&v=5&img_1_h=81&img_0=http://support.mozilla.com/styles/mozcommon/mozilla-logo.png&img_1=http://cf.kampyle.com/buttons/en/orange/en-orange-corner-low-right.gif&img_0_w=145&img_1_w=81&s=Have a question about Firefox? Search the Knowledge Base or check out the tutorials and reference articles below.&t=Firefox Help&u=http://support.mozilla.com/en-US/kb/Firefox+Help?style_mode=inproduct&post[body]=Have a question about Firefox? Search the Knowledge Base or check out the tutorials and reference articles below.&post[title]=<a href="http://support.mozilla.com/en-US/kb/Firefox+Help?style_mode=inproduct">Firefox Help</a>&commit=Post quote&post[blog_id]=161640
+post[type]=quote&post[source]=http://support.mozilla.com/en-US/kb/Firefox Help?style_mode=inproduct  &post[body]=Have a question about Firefox? Search the Knowledge Base or check out the tutorials and reference articles below.&post[title]=<a href="http://support.mozilla.com/en-US/kb/Firefox Help?style_mode=inproduct">Firefox Help</a>&commit=Post quote&t=Firefox Help&s=Have a question about Firefox? Search the Knowledge Base or check out the tutorials and reference articles below.&u=http://support.mozilla.com/en-US/kb/Firefox Help?style_mode=inproduct&post[blog_id]=161640
+post[type]=quote&post[source]=http://www.google.de&post[body]=Test 1, 2, 3&post[title]=<a href="http://www.google.de"></a>&commit=Post quote&t=&s=Test 1, 2, 3&u=http://www.google.de&post[blog_id]=161640
