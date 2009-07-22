@@ -22,9 +22,6 @@ var FireSoup = {
 		var testlabel = document.getElementById("testlabel");
 		testlabel.value = "Session ID: " + Soup.sessionId();
 		
-		var testeditor = document.getElementById("testeditor");
-		testeditor.contentDocument.designMode = 'on';
-		
 		var tabbox = document.getElementById("modeTabs");
 		switch(mode) {
 		case "text":
@@ -38,17 +35,9 @@ var FireSoup = {
 			tabbox.selectedIndex = 2;
 			break;
 		}
-	},
-	
-	_editorMode: "html",
-	toggleEditor: function() {
-		var testeditor = document.getElementById("testeditor");
 		
-		if (this._editorMode == "html") {
-			testeditor.makeEditable("text", false);
-		} else {
-			testeditor.makeEditable("html", false);
-		}
+		//jQuery("wysiwyg_editor_html").each( function(n) {this.contextDocument.designMode = "on";} );
+		//jQuery("wysiwyg_editor_text").each( function(n) {this.addClass("hidden");} );
 	},
 	
 	post: function() {

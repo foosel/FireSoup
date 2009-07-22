@@ -1,179 +1,183 @@
 <?xml version="1.0"?>
 <?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
-<window id="firesoup"
-	xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+<?xml-stylesheet href="chrome://firesoup/skin/skin.css" type="text/css"?>
+
+<xul:window id="firesoup"
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns="http://www.w3.org/1999/xhtml"
 	title="Post to Soup.io"
 	onload="FireSoup.init()">
-	<script src="firesoup.js" />
-	<script src="soup.js" />
+
+	<xul:script type="application/x-javascript" src="jquery-1.3.2.js" />
+	<xul:script src="firesoup.js" />
+	<xul:script src="soup.js" />
 	
 	<!-- Test stuff -->
-	<label id="testlabel" value="" />
-	<editor type="content-primary" editortype="html" id="testeditor" src="about:blank" flex="1"/>
-	<button id="testeditor_toggle" value="Toggle Source/HTML" oncommand="FireSoup.toggleEditor()" />
+	<xul:label id="testlabel" value="" />
 	
 	<!-- Tab box for all the different post dialogs -->
-	<tabbox id="modeTabs">
-		<tabs>
-			<tab label="Text" />
-			<tab label="Link" />
-			<tab label="Quote" />
-			<tab label="Image" />
-			<tab label="Video" />
-			<tab label="File" />
-			<tab label="Review" />
-			<tab label="Event" />
-		</tabs>
+	<xul:tabbox id="modeTabs">
+		<xul:tabs>
+			<xul:tab label="Text" />
+			<xul:tab label="Link" />
+			<xul:tab label="Quote" />
+			<xul:tab label="Image" />
+			<xul:tab label="Video" />
+			<xul:tab label="File" />
+			<xul:tab label="Review" />
+			<xul:tab label="Event" />
+		</xul:tabs>
 		
-		<tabpanels>
+		<xul:tabpanels>
 			<!-- Text dialog -->
-			<tabpanel id="texttab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-							<label value="Title:" control="text.title" />
-							<textbox id="text.title" />
-						</row>
-						<row>
-							<label value="Text:" control="text.text" />
-							<textbox id="text.text" multiline="true" />
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="texttab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+							<xul:label value="Title:" control="text.title" />
+							<xul:textbox id="text.title" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="Text:" control="text.text" />
+							<xul:textbox id="text.text" multiline="true" />
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Link dialog -->
-			<tabpanel id="linktab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-							<label value="URL:" control="link.url" />
-							<textbox id="link.url" />
-						</row>
-						<row>
-							<label value="Caption:" control="link.caption" />
-							<textbox id="link.caption" />
-						</row>
-						<row>
-							<label value="Description:" control="link.description" />
-							<textbox id="link.description" multiline="true" />
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="linktab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+							<xul:label value="URL:" control="link.url" />
+							<xul:textbox id="link.url" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="Caption:" control="link.caption" />
+							<xul:textbox id="link.caption" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="Description:" control="link.description" />
+							<xul:textbox id="link.description" multiline="true" />
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Quote dialog -->
-			<tabpanel id="quotetab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-							<label value="Title:" control="quote.title" />
-							<textbox id="quote.title" flex="1" />
-						</row>
-						<row>
-							<label value="Text:" control="quote.text" />
-							<textbox id="quote.text" multiline="true" />
-						</row>
-						<row>
-							<label value="" control="quote.source" />
-							<hbox flex="1">
-								<label value="—" />
-								<textbox id="quote.source" flex="1" />
-							</hbox>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="quotetab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+							<xul:label value="Title:" control="quote.title" />
+							<xul:textbox id="quote.title" flex="1" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="Text:" control="quote.text" />
+							<xul:textbox id="quote.text" multiline="true" class="wysiwyg_editor" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="" control="quote.source" />
+							<xul:hbox flex="1">
+								<xul:label value="—" />
+								<xul:hbox>
+								</xul:hbox>
+							</xul:hbox>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Image dialog -->
-			<tabpanel id="imagetab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="imagetab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Video dialog -->
-			<tabpanel id="videotab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="videotab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- File dialog -->
-			<tabpanel id="filetab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="filetab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Review dialog -->
-			<tabpanel id="reviewtab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
+			<xul:tabpanel id="reviewtab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
 			
 			<!-- Event dialog -->
-			<tabpanel id="eventtab">
-				<grid flex="1">
-					<columns>
-						<column />
-						<column flex="1" />
-					</columns>
-					<rows>
-						<row>
-						</row>
-					</rows>
-				</grid>
-			</tabpanel>
-		</tabpanels>
+			<xul:tabpanel id="eventtab">
+				<xul:grid flex="1">
+					<xul:columns>
+						<xul:column />
+						<xul:column flex="1" />
+					</xul:columns>
+					<xul:rows>
+						<xul:row>
+						</xul:row>
+					</xul:rows>
+				</xul:grid>
+			</xul:tabpanel>
+		</xul:tabpanels>
 		
-	</tabbox>
+	</xul:tabbox>
 	
 	<!-- Button box for cancel and post buttons -->
-	<hbox id="buttonbox">
-		<spacer flex="1" />
-		<button id="button.cancel" label="Cancel" oncommand="FireSoup.close()" />
-		<button id="button.post" label="Post" oncommand="FireSoup.post()" />
-	</hbox>
-</window>
+	<xul:hbox id="buttonbox">
+		<xul:spacer flex="1" />
+		<xul:button id="button.cancel" label="Cancel" oncommand="FireSoup.close()" />
+		<xul:button id="button.post" label="Post" oncommand="FireSoup.post()" />
+	</xul:hbox>
+</xul:window>

@@ -3,7 +3,7 @@
 
 <!DOCTYPE firesoup SYSTEM "chrome://firesoup/locale/translations.dtd">
 <overlay id="fireSoup" xmlns="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
-		<script src="firesoup.js" />
+		<script type="application/x-javascript" src="firesoup.js" />
 
 		<keyset>
 			<key id="firesoup-run-key" modifiers="accel ctrl shift" key="S" oncommand="FireSoup.open()"/>

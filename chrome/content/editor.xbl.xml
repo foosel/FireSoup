@@ -1,0 +1,46 @@
+<?xml version="1.0"?>
+<bindings xmlns="http://www.mozilla.org/xbl"
+          xmlns:xbl="http://www.mozilla.org/xbl"
+          xmlns:html="http://www.w3.org/1999/xhtml"
+          xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul">
+    	
+	<binding id="editor">
+		<content>
+			<xul:vbox flex="1">
+				<xul:editor editortype="html" class="editor_html" src="about:blank" flex="1" />
+				<xul:textbox class="editor_text" xbl:inherit="flex" multiline="true" flex="1" />
+				<xul:button label="Toggle HTML/Source" oncommand="document.getBindingParent(this).toggleSource();" />
+			</xul:vbox>
+		</content>
+		
+		<implementation>
+			<constructor>
+			<![CDATA[
+				this.htmlEditor = document.getAnonymousNodes(this)[0].childNodes[0];
+				this.textEditor = document.getAnonymousNodes(this)[0].childNodes[1];
+				
+				this.htmlEditor.contextDocument.designMode = "on";
+			]]>
+			</constructor>
+			<destructor>
+				<![CDATA[
+				]]>
+			</destructor>
+			<method name="toggleSource">
+				<body>
+				<![CDATA[
+					console.log("Entered toggleSource");
+					if (this.htmlEditor.visible == true) {
+						this.htmlEditor.visible = false;
+						this.textEditor.visible = true;
+					} else {
+						this.htmlEditor.visible = true;
+						this.textEditor.visible = false;
+					}
+				]]>
+				</body>
+			</method>
+		</implementation>
+	</binding>
+	
+</bindings>
