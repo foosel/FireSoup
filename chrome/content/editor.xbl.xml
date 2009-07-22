@@ -7,8 +7,8 @@
 	<binding id="editor">
 		<content>
 			<xul:vbox flex="1">
-				<xul:editor editortype="html" class="editor_html" src="about:blank" flex="1" />
-				<xul:textbox class="editor_text" xbl:inherit="flex" multiline="true" flex="1" />
+				<xul:editor editortype="html" class="editor_html" src="about:blank" flex="1" hidden="false" />
+				<xul:textbox class="editor_text" xbl:inherit="flex" multiline="true" flex="1" hidden="true" />
 				<xul:button label="Toggle HTML/Source" oncommand="document.getBindingParent(this).toggleSource();" />
 			</xul:vbox>
 		</content>
@@ -19,7 +19,15 @@
 				this.htmlEditor = document.getAnonymousNodes(this)[0].childNodes[0];
 				this.textEditor = document.getAnonymousNodes(this)[0].childNodes[1];
 				
-				this.htmlEditor.contextDocument.designMode = "on";
+				this.htmlEditor.contentWindow.document.body.innerHTML = "Hello World!";
+				this.htmlEditor.contentWindow.document.designMode = "on";
+				
+				this.sanitizeHtml = function(text) {
+					text.replace(/<br\s*>/gi, "<br />");
+					text.replace(/<br \/>/gi, "<br />\\n");
+				
+					return text;
+				}
 			]]>
 			</constructor>
 			<destructor>
@@ -29,13 +37,16 @@
 			<method name="toggleSource">
 				<body>
 				<![CDATA[
-					console.log("Entered toggleSource");
-					if (this.htmlEditor.visible == true) {
-						this.htmlEditor.visible = false;
-						this.textEditor.visible = true;
+					if (this.htmlEditor.hidden == true) {
+						this.htmlEditor.hidden = false;
+						this.textEditor.hidden = true;
+						
+						this.htmlEditor.contentWindow.document.body.innerHTML = this.textEditor.value;
 					} else {
-						this.htmlEditor.visible = true;
-						this.textEditor.visible = false;
+						this.htmlEditor.hidden = true;
+						this.textEditor.hidden = false;
+						
+						this.textEditor.value = this.sanitizeHtml(this.htmlEditor.contentWindow.document.body.innerHTML);
 					}
 				]]>
 				</body>
