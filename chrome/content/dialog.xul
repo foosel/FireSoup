@@ -87,14 +87,13 @@
 						</xul:row>
 						<xul:row>
 							<xul:label value="Text:" control="quote.text" />
-							<xul:textbox id="quote.text" multiline="true" class="wysiwyg_editor" />
+							<xul:textbox id="quote.text" multiline="true" />
 						</xul:row>
 						<xul:row>
 							<xul:label value="" control="quote.source" />
 							<xul:hbox flex="1">
 								<xul:label value="—" />
-								<xul:hbox>
-								</xul:hbox>
+								<xul:textbox id="quote.source" />
 							</xul:hbox>
 						</xul:row>
 					</xul:rows>
@@ -110,6 +109,20 @@
 					</xul:columns>
 					<xul:rows>
 						<xul:row>
+							<xul:label value="Title:" control="image.title" />
+							<xul:textbox id="image.title" flex="1" />
+						</xul:row>
+						<xul:row>
+							<xul:label value="" control="" />
+							<xul:grid flex="1">
+								<xul:columns>
+									<xul:column />
+									<xul:column />
+									<xul:column />
+									<xul:column />
+								</xul:columns>
+								<xul:rows id="image.imagerows" />
+							</xul:grid>
 						</xul:row>
 					</xul:rows>
 				</xul:grid>

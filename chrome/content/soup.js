@@ -55,6 +55,13 @@ var Soup = {
 		var post = "post%5Btype%5D=quote&post%5Bsource%5D="+encodeURIComponent(source)+"&post%5Bbody%5D="+encodeURIComponent(text);
 		if (title) post += "&post%5Btitle%5D="+encodeURIComponent("<a href=\""+source+"\">"+title+"</a>");
 		return post;
+	},
+	
+	createLink: function(title, text, source) {
+		var post = "post%5Btype%5D=link&post%5Bsource%5D="+encodeURIComponent(source);
+		if (title) post += "&post%5Btitle%5D="+encodeURIComponent("<a href=\""+source+"\">"+title+"</a>");
+		if (text) post += "&post%5Bbody%5D="+encodeURIComponent(text);
+		return post;
 	}
 	
 };

@@ -7,27 +7,30 @@
 	<binding id="editor">
 		<content>
 			<xul:vbox flex="1">
+				<xul:hbox>
+					<xul:toolbarbutton image="chrome://firesoup/skin/html.png" type="checkbox" oncommand="document.getBindingParent(this).toggleSource();" />
+					<xul:toolbarbutton image="chrome://firesoup/skin/text_bold.png" type="checkbox" oncommand="document.getBindingParent(this).markBold();" />
+					<xul:toolbarbutton image="chrome://firesoup/skin/text_italic.png" type="checkbox" />
+					<xul:toolbarbutton image="chrome://firesoup/skin/link.png" type="checkbox" />
+				</xul:hbox>
 				<xul:editor editortype="html" class="editor_html" src="about:blank" flex="1" hidden="false" />
 				<xul:textbox class="editor_text" xbl:inherit="flex" multiline="true" flex="1" hidden="true" />
-				<xul:button label="Toggle HTML/Source" oncommand="document.getBindingParent(this).toggleSource();" />
 			</xul:vbox>
 		</content>
 		
 		<implementation>
 			<constructor>
 			<![CDATA[
-				this.htmlEditor = document.getAnonymousNodes(this)[0].childNodes[0];
-				this.textEditor = document.getAnonymousNodes(this)[0].childNodes[1];
+				this.sourceButton = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[0];
+				this.boldButton = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[1];
+				this.italicButton = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[2];
+				this.linkButton = document.getAnonymousNodes(this)[0].childNodes[0].childNodes[3];
 				
-				this.htmlEditor.contentWindow.document.body.innerHTML = "Hello World!";
+				this.htmlEditor = document.getAnonymousNodes(this)[0].childNodes[1];
+				this.textEditor = document.getAnonymousNodes(this)[0].childNodes[2];
+				
+				this.htmlEditor.contentWindow.document.contentEditable = true;
 				this.htmlEditor.contentWindow.document.designMode = "on";
-				
-				this.sanitizeHtml = function(text) {
-					text.replace(/<br\s*>/gi, "<br />");
-					text.replace(/<br \/>/gi, "<br />\\n");
-				
-					return text;
-				}
 			]]>
 			</constructor>
 			<destructor>
@@ -37,16 +40,43 @@
 			<method name="toggleSource">
 				<body>
 				<![CDATA[
-					if (this.htmlEditor.hidden == true) {
-						this.htmlEditor.hidden = false;
-						this.textEditor.hidden = true;
-						
-						this.htmlEditor.contentWindow.document.body.innerHTML = this.textEditor.value;
-					} else {
+					if (this.sourceButton.checked) {
+						this.boldButton.hidden = true;
+						this.italicButton.hidden = true;
+						this.linkButton.hidden = true;
 						this.htmlEditor.hidden = true;
 						this.textEditor.hidden = false;
 						
 						this.textEditor.value = this.sanitizeHtml(this.htmlEditor.contentWindow.document.body.innerHTML);
+					} else {
+						this.boldButton.hidden = false;
+						this.italicButton.hidden = false;
+						this.linkButton.hidden = false;
+						this.htmlEditor.hidden = false;
+						this.textEditor.hidden = true;
+						
+						this.htmlEditor.contentWindow.document.body.innerHTML = this.textEditor.value;
+					}
+				]]>
+				</body>
+			</method>
+			<method name="markBold">
+				<body>
+				<![CDATA[
+					this.markText("bold", null);
+				]]>
+				</body>
+			</method>
+			<method name="markText">
+				<parameter name="command" />
+				<parameter name="value" />
+				<body>
+				<![CDATA[
+					try {
+						this.htmlEditor.contentWindow.document.execCommand(command, false, value);
+						this.htmlEditor.contentWindow.focus();
+					} catch (e) {
+						alert(e);
 					}
 				]]>
 				</body>
