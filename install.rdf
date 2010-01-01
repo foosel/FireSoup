@@ -10,7 +10,7 @@
 		<em:creator>Gina Häußge </em:creator>
 		<em:description>Post to Soup.io</em:description>
 		<em:homepageURL>http://foosel.org/snippets/firesoup</em:homepageURL>
-		<em:iconURL>chrome://firesoup/skin/soup-32x32.png</em:iconURL>
+		<em:iconURL>chrome://firesoup/skin/firesoup-32x32.png</em:iconURL>
 
 		<em:targetApplication>
 			<Description>
