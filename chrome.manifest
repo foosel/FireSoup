@@ -2,8 +2,5 @@ content		firesoup    chrome/content/
 content		firesoup    chrome/content/ contentaccessible=yes
 overlay		chrome://browser/content/browser.xul chrome://firesoup/content/overlay.xul
 
-locale		firesoup	en-US		locale/en-US/
-locale		firesoup	de-DE		locale/de-DE/
-
 skin		firesoup	classic/1.0	skin/
 style		chrome://global/content/customizeToolbar.xul	chrome://firesoup/skin/skin.css
