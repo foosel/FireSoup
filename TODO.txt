@@ -1,3 +1,0 @@
-  * somehow retrieve blog_ids
-  * HTML Editor?
-  * 
