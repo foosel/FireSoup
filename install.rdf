@@ -8,15 +8,15 @@
 		<em:version>0.1</em:version>
 		<em:type>2</em:type>
 		<em:creator>Gina Häußge </em:creator>
-		<em:description>Post to Soup.io from Firefox without that stupid Bookmarklet</em:description>
+		<em:description>Post to Soup.io by calling the bookmarklet from Firefox</em:description>
 		<em:homepageURL>http://foosel.org/snippets/firesoup</em:homepageURL>
 		<em:iconURL>chrome://firesoup/skin/soup-32x32.png</em:iconURL>
 
 		<em:targetApplication>
 			<Description>
 				<em:id>{ec8030f7-c20a-464f-9b0e-13a3a9e97384}</em:id>
-				<em:minVersion>2.0</em:minVersion>
-				<em:maxVersion>3.1b2</em:maxVersion>
+				<em:minVersion>3.0</em:minVersion>
+				<em:maxVersion>3.6</em:maxVersion>
 			</Description> 
 		</em:targetApplication>
 	</Description>

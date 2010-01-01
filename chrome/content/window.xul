@@ -1,0 +1,14 @@
+<?xml version="1.0"?>
+<?xml-stylesheet href="chrome://global/skin/" type="text/css"?>
+<?xml-stylesheet href="chrome://firesoup/skin/skin.css" type="text/css"?>
+
+<xul:window id="firesoup"
+	xmlns:xul="http://www.mozilla.org/keymaster/gatekeeper/there.is.only.xul"
+	xmlns="http://www.w3.org/1999/xhtml"
+	title="FireSoup"
+	onload="FireSoup.init()">
+
+	<xul:script src="firesoup.js" />
+	
+	<xul:browser type="content-primary" id="content" src="chrome://firesoup/content/loading.html" flex="1" />
+</xul:window>

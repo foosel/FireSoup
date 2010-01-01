@@ -1,184 +1,219 @@
+/*
+ * FireSoup
+ *
+ * Copyright (c) 2010 Gina Haeussge
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful, but
+ * WITHOUT ANY WARRANTY; without even the implied warranty of MERCHANTABILITY
+ * or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License
+ * for more details.
+ *
+ * You should have received a copy of the GNU General Public License along
+ * with this program; if not, write to the Free Software Foundation, Inc.,
+ * 59 Temple Place, Suite 330, Boston, MA 02111-1307 USA
+ */
+
+/**
+ * Encapsulates all functionality needed by FireSoup.
+ */
 var FireSoup = {
+
+	/** The version of the supported Soup bookmarklet. */
+	version: 5,
+
+	/** The Console Service instance. */
+	consoleService: null,
+
+	/** The Preference Manager instance. */
+	prefManager: null,
+
+	/** The URL of the bookmarklet. */
+	bookmarkletUrl: "http://www.soup.io/bookmarklet/",
+
+	/** The URL to trigger a closing of the bookmarklet window. */
+	bookmarkletCloseTriggerUrl: "http://www.soup.io/bookmarklet/save",
+
+	/**
+	 * Retrieves the information necessary for the Soup bookmarklet to work from the currently opened
+	 * page and then opens the new browser window to be used for the bookmarklet.
+	 */
 	open: function() {
+		// prepare access to page
 		var browser = window.getBrowser();
 		var contentDoc = browser.contentDocument;
 		var contentWin = browser.contentWindow;
-		
+
 		// get title
 		var title = contentDoc.title;
-	
+
 		// get source
 		var source = browser.currentURI.spec;
-	
+
 		// get selection
-	    var selection = '';
-	    var winSel = contentWin.getSelection();
-	    if (!winSel || winSel == "") {
-	    	for (var i = 0; i < contentWin.frames.length; i++) {
-	    		winSel = contentWin.frames[i].window.getSelection();
-	    		if (winSel && winSel != "") {
-	    			break;
-	    		}
-	    	}
-	    }
-	    
-	    if (winSel && winSel != "") {
-	    	var range = winSel.getRangeAt(0);
-		    if (range) {
-			    var div = contentDoc.createElement("div");
-			    div.appendChild(range.cloneContents());
-			    selection = div.innerHTML;
-		    }
-	    }
-	    
-	    // get images
-	    var images = [];
-	    for (var i = 0; i < contentDoc.images.length; i++) {
-	    	var img = contentDoc.images[i];
-	    	if (img.offsetWidth && img.offsetHeight && img.offsetWidth*img.offsetHeight > 70*70) {
-	    		var pushable = {
-	    			name: "img_" + i,
-	    			url: img.src,
-	    			width: img.offsetWidth,
-	    			height: img.offsetHeight
-	    		};
-	    		images.push(pushable);
-	    	}
-	    }
-	    
-	    // prepare post and open dialog
+		var selection = '';
+		var winSel = contentWin.getSelection();
+		if (!winSel || winSel == "") {
+			for (var i = 0; i < contentWin.frames.length; i++) {
+				winSel = contentWin.frames[i].window.getSelection();
+				if (winSel && winSel != "") {
+					break;
+				}
+			}
+		}
+
+		if (winSel && winSel != "") {
+			var range = winSel.getRangeAt(0);
+			if (range) {
+				var div = contentDoc.createElement("div");
+				div.appendChild(range.cloneContents());
+				selection = div.innerHTML;
+			}
+		}
+
+		// get images
+		var images = [];
+		for (var i = 0; i < contentDoc.images.length; i++) {
+			var img = contentDoc.images[i];
+			if (img.offsetWidth && img.offsetHeight && img.offsetWidth*img.offsetHeight > 70*70) {
+				var pushable = {
+					name: "img_" + i,
+					url: img.src,
+					width: img.offsetWidth,
+					height: img.offsetHeight
+				};
+				images.push(pushable);
+			}
+		}
+
+		// get trackback url
+		var trackback_url = contentDoc.body.innerHTML.match('trackback:ping="(.*)"');
+
+		// prepare post data
 		var post = {
-				type: "quote",
 				source: source,
 				title: title,
 				selection: selection,
-				images: images
+				images: images,
+				trackback: trackback_url
 		};
-		
+		var postData = this.preparePostData(post);
+
+		// open popup and display loading message
 		window.openDialog(
-			"chrome://firesoup/content/dialog.xul",
-			"firesoupDialog",
-			"chrome,dialog,centerscreen,resizable=no",
-			post
+				"chrome://firesoup/content/window.xul",
+				"_blank",
+				"toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=400",
+				postData
 		);
 	},
-	
-	close: function() {
-		window.close();
-	},
-	
-	init: function() {
-		try {
-			var post = window.arguments[0];
-		} catch (e) {
-			// DEBUGGING
-			post = {
-					type: "image",
-					source: "http://www.mozilla.org/",
-					title: "Mozilla - Home of the Mozilla Project",
-					selection: "",
-					images: [
-				               {
-				            	   name: "img_0",
-				            	   url: "http://www.mozilla.org/images/feature-logos2.png",
-				            	   width: 102,
-				            	   height: 96
-				               },
-				               {
-				            	   name: "img_1",
-				            	   url: "http://www.mozilla.org/images/front-moz-store.png",
-				            	   width: 150,
-				            	   height: 150
-				               }
-				            ]
-			};
-		}
-		
-		var testlabel = document.getElementById("testlabel");
-		testlabel.value = "Session ID: " + Soup.sessionId();
-		
-		var tabbox = document.getElementById("modeTabs");
-		switch(post.type) {
-		case "text":
-		default:
-			tabbox.selectedIndex = 0;
-			break;
-		case "link":
-			tabbox.selectedIndex = 1;
-			break;
-		case "quote":
-			tabbox.selectedIndex = 2;
-			break;
-		case "image":
-			tabbox.selectedIndex = 3;
-			break;
-		}
-		
-		// set titles
-		var titleElements = ["text.title", "link.caption", "quote.title"];
-		for (var i = 0; i < titleElements.length; i++) {
-			var e = document.getElementById(titleElements[i]);
-			if (e) e.value = post.title; 
-		}
-		
-		// set URLs
-		var urlElements = ["link.url", "quote.source"];
-		for (var i = 0; i < urlElements.length; i++) {
-			var e = document.getElementById(urlElements[i]);
-			if (e) e.value = post.source; 
-		}
-		
-		// set texts
-		var textElements = ["text.text", "link.description", "quote.text"];
-		for (var i = 0; i < textElements.length; i++) {
-			var e = document.getElementById(textElements[i]);
-			if (e) e.value = post.selection; 
-		}
-		
-		// set images
-		var imageRows = document.getElementById("image.imagerows");
-		var curRow = null;
-		var curImg = null;
-		var image = null;
-		if (post.images) {
-			for (var i = 0; i < post.images.length; i++) {
-				if (i % 4 == 0) {
-					curRow = document.createElement("row");
-					imageRows.appendChild(curRow);
-				}
-				image = post.images[i];
-				curImg = document.createElement("image");
-				curImg.id = "image." + image.name;
-				curImg.src = image.url;
-				curImg.width = 70;
-				curImg.height = 70;
-				curImg.oncommand = "alert('this.id')";
-				curRow.appendChild(curImg);
-			}
-			
-		}
-	},
-	
-	post: function() {
-		var tabbox = document.getElementById("modeTabs");
-		var selectedIdx = tabbox.selectedIndex;
-		
-		var post = null;
-		switch (selectedIdx) {
-			case 2:
-				var quote_title = document.getElementById("quote.title").value;
-				var quote_text = document.getElementById("quote.text").value;
-				var quote_source = document.getElementById("quote.source").value;
-				post = Soup.createQuote(quote_title, quote_text, quote_source);
-				break;
-		}
-		
-		// TEST CODE
-		var blog_id = "161640";
-		Soup.post(post, blog_id);
-		// /TEST CODE
-		
-		this.close();
-	}
-};
 
+	/**
+	 * Loads the bookmarklet into the bookmarklet browser.
+	 */
+	init: function() {
+		// load bookmarklet
+		var postData = window.arguments[0];
+		var bookmarkletBrowser = window.document.getElementById("content");
+		bookmarkletBrowser.addEventListener("DOMContentLoaded", this.onDOMContentLoaded, true);
+		bookmarkletBrowser.loadURIWithFlags(FireSoup.bookmarkletUrl, null, null, null, postData);
+	},
+
+	/**
+	 * Handler for DOMContentLoaded event on the bookmarklet browser instance. Closes the window
+	 * if the url loaded equals the bookmarklet close trigger url. The content of the loaded
+	 * document then would be a simple Javascript calling "self.close()", this doesn't work here though
+	 * as the window wasn't opened using window.open and thus we have to use that rather unconventional
+	 * approach to closing the window.
+	 *
+	 * @param event The DOMContentLoaded event.
+	 */
+	onDOMContentLoaded: function(event) {
+		url = window.document.getElementById("content").contentDocument.location.href;
+		FireSoup.log("DOMContentLoaded event for " + url);
+		if (FireSoup.bookmarkletCloseTriggerUrl == url) {
+			FireSoup.log("Bookmarklet close trigger activated, closing the window");
+			window.close();
+		}
+	},
+
+	/**
+	 * Encapsulates the page information necessary for the soup bookmarklet (source, selection, title, optional images
+	 * and optional trackback url) into a post payload object suitable for posting via a browser instance.
+	 *
+	 * @param  post The page information to send to the soup bookmarklet.
+	 * @return A MIME stream object containing the post payload.
+	 */
+	preparePostData: function(post) {
+		const CC = Components.classes;
+		const CI = Components.interfaces;
+
+		var dataString = "";
+		dataString += "u=" + encodeURIComponent(post.source);
+		dataString += "&s=" + encodeURIComponent(post.selection);
+		dataString += "&t=" + encodeURIComponent(post.title);
+		dataString += "&v=" + this.version;
+		if (post.images.length > 0) {
+			for (var i = 0; i < post.images.length; i++) {
+				dataString += "&" + post.images[i].name + "=" + encodeURIComponent(post.images[i].url) + "&" + post.images[i].name + "_w=" + post.images[i].width + "&" + post.images[i].name + "_h=" + post.images[i].height;
+			}
+		}
+		if (post.trackback) {
+			dataString += "&tb=" + encodeURIComponent(post.trackback);
+		}
+		this.log("Prepared data for bookmarklet: " + dataString);
+
+		// POST method requests must wrap the encoded text in a MIME
+		// stream
+		var stringStream = CC["@mozilla.org/io/string-input-stream;1"].createInstance(CI.nsIStringInputStream);
+		if ("data" in stringStream) {
+			// Gecko 1.9 or newer
+			stringStream.data = dataString;
+		} else {
+			// 1.8 or older
+			stringStream.setData(dataString, dataString.length);
+		}
+
+		var postData = CC["@mozilla.org/network/mime-input-stream;1"].createInstance(CI.nsIMIMEInputStream);
+		postData.addHeader("Content-Type", "application/x-www-form-urlencoded");
+		postData.addContentLength = true;
+		postData.setData(stringStream);
+		return postData;
+	},
+
+	/**
+	 * Logs the given text to the error console if debuglogging is enabled.
+	 *
+	 * @param message The message to log.
+	 */
+	log: function(message) {
+		if (this.getPrefManager().getBoolPref("extensions.firesoup.debuglogging")) {
+			this.getConsoleService().logStringMessage("[FireSoup] " + message);
+		}
+	},
+
+	/**
+	 * @return The Preference Manager instance to use for looking up preferences.
+	 */
+	getPrefManager: function() {
+		if (this.prefManager == null) {
+			this.prefManager = Components.classes["@mozilla.org/preferences-service;1"].getService(Components.interfaces.nsIPrefBranch);
+		}
+		return this.prefManager;
+	},
+
+	/**
+	 * @return The Console Service instance to use for logging to the error console.
+	 */
+	getConsoleService: function() {
+		if (this.consoleService == null) {
+			this.consoleService = Components.classes["@mozilla.org/consoleservice;1"].getService(Components.interfaces.nsIConsoleService);
+		}
+		return this.consoleService;
+	}
+
+};

@@ -10,6 +10,6 @@
 		</keyset>
 
 		<toolbarpalette id="BrowserToolbarPalette">
-			<toolbarbutton id="firesoup-toolbar-button" label="FireSoup" tooltiptext="&runfiresoup;" oncommand="FireSoup.open()"/>
+			<toolbarbutton id="firesoup-toolbar-button" label="FireSoup" tooltiptext="&runfiresoup;" oncommand="FireSoup.open();"/>
 		</toolbarpalette>
 </overlay>
