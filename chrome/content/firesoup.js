@@ -105,7 +105,7 @@ var FireSoup = {
 
 		// open popup and display loading message
 		window.openDialog(
-				"chrome://firesoup/content/window.xul",
+				"chrome://firesoup/content/browser.xul",
 				"_blank",
 				"toolbar=0,resizable=1,scrollbars=yes,status=1,width=450,height=400",
 				postData
