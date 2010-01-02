@@ -5,7 +5,7 @@
 	<Description about="urn:mozilla:install-manifest">
 		<em:id>firesoup@foosel.org</em:id>
 		<em:name>FireSoup</em:name>
-		<em:version>0.1</em:version>
+		<em:version>0.2</em:version>
 		<em:type>2</em:type>
 		<em:creator>Gina Häußge </em:creator>
 		<em:description>Post to Soup.io</em:description>

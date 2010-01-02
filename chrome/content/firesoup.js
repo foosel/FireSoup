@@ -47,6 +47,7 @@ var FireSoup = {
 		var browser = window.getBrowser();
 		var contentDoc = browser.contentDocument;
 		var contentWin = browser.contentWindow;
+		var i = 0, j = 0;
 
 		// get title
 		var title = contentDoc.title;
@@ -58,7 +59,7 @@ var FireSoup = {
 		var selection = '';
 		var winSel = contentWin.getSelection();
 		if (!winSel || winSel == "") {
-			for (var i = 0; i < contentWin.frames.length; i++) {
+			for (i = 0; i < contentWin.frames.length; i++) {
 				winSel = contentWin.frames[i].window.getSelection();
 				if (winSel && winSel != "") {
 					break;
@@ -77,16 +78,28 @@ var FireSoup = {
 
 		// get images
 		var images = [];
-		for (var i = 0; i < contentDoc.images.length; i++) {
-			var img = contentDoc.images[i];
-			if (img.offsetWidth && img.offsetHeight && img.offsetWidth*img.offsetHeight > 70*70) {
-				var pushable = {
-					name: "img_" + i,
-					url: img.src,
-					width: img.offsetWidth,
-					height: img.offsetHeight
-				};
-				images.push(pushable);
+		var imgIndex = 0;
+		var frames = this.collectFrames(contentWin);
+		var docs = [];
+
+		FireSoup.log("Found " + frames.length + " frames");
+		for (i = 0; i < frames.length; i++) {
+			docs.push(frames[i].document);
+		}
+		for (i = 0; i < docs.length; i++) {
+			var doc = docs[i];
+			for (j = 0; j < doc.images.length; j++) {
+				var img = doc.images[j];
+				if (img.offsetWidth && img.offsetHeight && img.offsetWidth*img.offsetHeight > 70*70) {
+					var pushable = {
+						name: "img_" + imgIndex,
+						url: img.src,
+						width: img.offsetWidth,
+						height: img.offsetHeight
+					};
+					images.push(pushable);
+					imgIndex++;
+				}
 			}
 		}
 
@@ -183,6 +196,15 @@ var FireSoup = {
 		postData.addContentLength = true;
 		postData.setData(stringStream);
 		return postData;
+	},
+
+	collectFrames: function(win) {
+		var frames = [];
+		frames.push(win);
+		for (var i = 0; i < win.frames.length; i++) {
+			frames = frames.concat(this.collectFrames(win.frames[i].window));
+		}
+		return frames;
 	},
 
 	/**
